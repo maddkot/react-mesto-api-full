@@ -1,0 +1,20 @@
+.header__authorization {      
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: normal;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .header__authorization:hover {
+    opacity: 0.6;
+  }
+  
+  @media screen and (max-width: 882px) {
+    .header__authorization {
+      margin-right: 27px;
+      font-size: 14px;
+      line-height: 17px;
+    }
+  }

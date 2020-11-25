@@ -1,0 +1,9 @@
+.header__logout {
+    text-decoration: none;
+    cursor: pointer;
+    color: white;
+}
+
+.header__logout:hover {
+  opacity: 0.6;
+}

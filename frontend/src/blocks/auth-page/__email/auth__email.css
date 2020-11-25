@@ -1,0 +1,10 @@
+.auth__email {
+    width: 100%;
+    margin-bottom: 30px;
+    padding-bottom: 13px;
+    background-color: #000000;
+    border: none;
+    border-bottom: 2px solid #CCCCCC;
+    outline: none;
+    color: white; 
+  }

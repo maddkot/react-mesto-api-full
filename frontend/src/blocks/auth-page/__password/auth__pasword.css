@@ -1,0 +1,16 @@
+.auth__password {
+    width: 100%;
+    padding-bottom: 13px;
+    border: none;
+    margin: 0 0 216px;
+    border-bottom: 2px solid #CCCCCC;  
+    background-color: #000000;
+    outline: none;
+    color: white;
+  }
+  
+  @media screen and (max-width: 398px){
+    .auth__password {
+      margin-bottom:  173px;
+    }
+  }

@@ -1,0 +1,42 @@
+@import url('./_full-name/popup__input_full-name.css');
+@import url('./_description/popup__input_description.css');
+@import url('./_type-error/popup__input_type-error.css');
+
+.popup__input {
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  line-height: 17px;
+  padding-bottom: 13px;
+  outline: none;
+  -moz-border: none;
+  -moz-border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  -moz-outline: none;
+  outline-style: none;
+}
+
+/*.popup__input:nth-child(3n) {
+  margin-top: 30px;
+}*/
+
+
+
+/* для валидации
+.popup__input_type-error {
+  border-bottom: 1px solid rgba(255, 0, 0);
+}  */
+
+/*.popup__input-error {  
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: 400;
+  color: #FF0000; 
+  max-width: 330px;
+  height: 30px;  
+  opacity: 0;
+  transition: 0.3s;
+}*/
+
+/*.popup__input-error_active {
+  opacity: 1;
+}*/

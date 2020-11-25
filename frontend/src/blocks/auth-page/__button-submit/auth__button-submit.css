@@ -1,0 +1,19 @@
+.auth__button-submit {
+    width: 100%;
+    padding: 14px 84px;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center; 
+  }
+  
+  .auth__button-submit:hover {
+    opacity: 0.6;
+  }
+  
+  @media screen and (max-width: 398px) {
+    .auth__button-submit {
+      font-size: 16px;
+      line-height: 19px;
+      padding: 14px 35px;
+    }
+  }

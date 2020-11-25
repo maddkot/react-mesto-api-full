@@ -1,0 +1,9 @@
+.popup__button-save_inactive {
+    background: #e5e5e5;
+    pointer-events: none;
+    transition: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }

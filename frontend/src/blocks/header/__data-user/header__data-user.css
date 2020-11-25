@@ -1,0 +1,11 @@
+.header__data-user {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  
+  @media screen and (max-width: 882px){
+    .header__data-user{ 
+      margin-right: 27px;;
+    }
+  }

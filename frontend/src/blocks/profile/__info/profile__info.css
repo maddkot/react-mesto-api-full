@@ -1,0 +1,20 @@
+.profile__info {  
+  width: 100%;
+  align-items: center;
+  display:grid;
+  grid-template-columns: repeat(2,auto);
+  justify-content: inherit;
+  /*display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;*/  
+}
+
+@media screen and (max-width: /*708px*/945px) {
+  .profile__info {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 36px;
+    
+  }
+}

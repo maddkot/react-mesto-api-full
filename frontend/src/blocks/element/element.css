@@ -1,0 +1,16 @@
+@import url('./__photo/element__photo.css');
+@import url('./__group/element__group.css');
+@import url('./__text/element__text.css');
+@import url('./__button-like/element__button-like.css');
+@import url('./__basket/element__basket.css');
+@import url('./__like-counter/element__like-counter.css');
+@import url('./__container-like/element__container-like.css');
+@import url('./__basket/_visible/element__basket_visible.css');
+@import url('./__basket/_hidden/element__basket_hidden.css');
+.element {    
+    max-width: 282px;
+    max-height: 361px;    
+    border-radius: 10px;
+    background: #FFFFFF;
+    overflow: hidden;
+}
