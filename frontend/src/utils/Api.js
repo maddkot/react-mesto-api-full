@@ -2,36 +2,36 @@
  class Api {
     constructor({baseUrl, headers}) {
         this.baseUrl = baseUrl;
-        this.headers = headers;        
+        //this.headers = headers;        
     }
-    
-    //promisAll
-     getServerDatas() {
-         return Promise.all([this.getInitialCards(), this.getUserInfo()])
          
-    } 
-     
     //метод вызова карточек с сервера
-    getInitialCards() {
+    getInitialCards(token) {
         return fetch(`${this.baseUrl}/cards`, {
-            headers: this.headers,
-            method: "GET"
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
         })
             .then(res => {
-                console.log(`1`, res)
                 if (res.ok) {
                     return res.json();
                 } else {
                     return Promise.reject(new Error(`Ошибка: ${res.status}`));
-                }});           
+                }
+                
+            });           
     }
 
     //метод отправки карточки на сервер
-    addNewCard(item) {
+    addNewCard(item, token) {
         return fetch(`${this.baseUrl}/cards`,
             {
                 method: 'POST',
-                headers: this.headers,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({
                         /* name: item.title,
                         link: item.url */
@@ -42,48 +42,60 @@
         .then(res => {
             if (res.ok) {
                 return res.json();
-            }
-            return Promise.reject(new Error(`Ошибка: ${res.status}`));
+            } else {
+                return Promise.reject(new Error(`Ошибка: ${res.status}`));
+            }            
         });           
     }
 
     //метод удаления карточки
-    deleteCard(id) { 
+    deleteCard(id, token) { 
         return fetch(`${this.baseUrl}/cards/${id}`,
         {
             method: "DELETE",
-            headers: this.headers
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
         })
         .then(res => {
             if (res.ok) {
                 return res.json();
-            }
-            return Promise.reject(new Error(`Ошибка: ${res.status}`));
+            } else { 
+                return Promise.reject(new Error(`Ошибка: ${res.status}`));
+            }            
         });
     }
 
 
     //метод отправки лайка карточек
-    setLike(id) {
+    setLike(id, token) {
         return fetch(`${this.baseUrl}/cards/likes/${id}`,
             {
                 method: "PUT",
-                headers: this.headers
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
             })
             .then(res => {
                 if (res.ok) {
                     return res.json();
-                }
-                return Promise.reject(new Error(`Ошибка: ${res.status}`));
+                } else {
+                    return Promise.reject(new Error(`Ошибка: ${res.status}`));
+                }                
             });
     }
 
     //метод удаления лайка карточек
-    deleteLike(id) {
+    deleteLike(id, token) {
         return fetch(`${this.baseUrl}/cards/likes/${id}`,
             {
                 method: "DELETE",
-                headers: this.headers
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
             })
             .then(res => {
                 if (res.ok) {
@@ -95,13 +107,15 @@
 
 
     //метод получения данных о профиле
-    getUserInfo() {
+    getUserInfo(token) {
         return fetch(`${this.baseUrl}/users/me`, {
             method: "GET",
-            headers: this.headers            
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
         })
-            .then(res => {
-                console.log(`2`, res)
+            .then(res => {                
                 if (res.ok) {
                     return res.json();
                 } else {
@@ -110,12 +124,15 @@
     }
 
     //метод изменение аватарки
-    changeAvatar(avatarItem) {
-        //console.log(avatarItem);
+    changeAvatar(avatarItem, token) {
+        
         return fetch(`${this.baseUrl}/users/me/avatar`,
             {
                 method: "PATCH",
-                headers: this.headers,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({
                     avatar: avatarItem.avatar
                 })
@@ -123,17 +140,21 @@
             .then(res => {
                 if (res.ok) {
                     return res.json();
-                }
-                return Promise.reject(new Error(`Ошибка: ${res.status}`));
+                } else { 
+                    return Promise.reject(new Error(`Ошибка: ${res.status}`));
+                }                
             });
     }
 
     //метод отправки данных профиля
-    setUserInfo(item) {
+    setUserInfo(item, token) {
         return fetch(`${this.baseUrl}/users/me`,
             {
                 method: "PATCH",
-                headers: this.headers,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({
                     /* name: item.fullName,
                     about: item.description */
@@ -144,8 +165,9 @@
             .then(res => {                    
                     if (res.ok) {
                         return res.json();
-                        }
+                    } else { 
                         return Promise.reject(new Error(`Ошибка: ${res.status}`));
+                    }                    
             })
     }
 
@@ -154,9 +176,5 @@
 
 export const apiData = new Api({
     //baseUrl: "https://mesto.nomoreparties.co/v1/cohort-14", 
-    baseUrl:'http://localhost:3000',
-    headers: {
-        'Authorization': localStorage.getItem('jwt'),
-        'Content-Type': 'application/json'
-    },
+    baseUrl:'http://localhost:3000',    
   });

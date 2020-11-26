@@ -8,14 +8,14 @@ const usersSchema = new moongoose.Schema({
     type: String,
     minlength: 2,
     maxlength: 30,
-    required: true,
+    required: false,
     default: 'Жак-Ив Кусто',
   },
   about: {
     type: String,
     minlength: 2,
     maxlength: 30,
-    required: true,
+    required: false,
     default: 'Исследователь',
   },
   avatar: {

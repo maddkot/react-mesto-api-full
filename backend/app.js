@@ -8,6 +8,7 @@ const auth = require('./middlewares/auth');
 require('dotenv').config();
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
+const { PORT = 3000 } = process.env;
 const app = express();
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
@@ -15,7 +16,6 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useFindAndModify: false,
 });
 
-const { PORT = 3000 } = process.env;
 app.use(require('cors')());
 
 app.use(express.urlencoded({ extended: true }));
@@ -35,14 +35,12 @@ app.post('/signin', celebrate({
     password: Joi.string().required().min(4),
   }),
 }), login);
+
 app.post('/signup', celebrate({
   body: Joi.object().keys({
-    name: Joi.string().max(20).min(2),
-    about: Joi.string().max(20).min(2),
-    avatar: Joi.string().pattern(/^((http|https):\/\/)(www\.)?([\w\W\d]{1,})(\.)([a-zA-Z]{1,10})([\w\W\d]{1,})?$/),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
-  }).unknown(true),
+  }),
 }), createUser);
 
 app.use(auth);

@@ -5,6 +5,7 @@ function Card({card, onCardClick, onCardLike, onCardDelete}) {
   
   const currentUser = React.useContext(CurrentUserContext);
   
+  
   //проверяем ид пользователя и ид пользователя, создавшего карточку
   const isOwn = card.owner === currentUser._id;
   // создаем константу, в которой првоеряется ид пользователя и отображает класс с корзинкой или его удаляет
@@ -14,7 +15,7 @@ function Card({card, onCardClick, onCardLike, onCardDelete}) {
   
   // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
   //const isLiked = card.likes.some(i => i._id === currentUser._id);
-  const isLiked = card.likes.some(i => i._id === currentUser._id);
+  const isLiked = card.likes.some(i => i === currentUser._id);
   const cardLikeButtonClassName = (`element__button-like ${isLiked ? 'element__button-like_on' : ''}`)
   
   

@@ -15,6 +15,7 @@ const getUsers = (req, res, next) => {
     })
     .catch(next);
 };
+
 // получение информации об одном юзере
 const getOneUser = (req, res, next) => {
   // User.findById(req.user._id)
@@ -35,13 +36,9 @@ const getOneUser = (req, res, next) => {
 
 // создание пользователя
 const createUser = (req, res, next) => {
-  const {
-    name, about, avatar, email, password,
-  } = req.body;
+  const { email, password } = req.body;
   bcrypt.hash(password, 10)
-    .then((hash) => User.create({
-      name, about, avatar, email, password: hash,
-    }))
+    .then((hash) => User.create({ email, password: hash }))
     .then((user) => {
       res.status(200).send({ message: `Пользователь ${user} создан` });
     })
@@ -87,11 +84,12 @@ const login = (req, res, next) => {
 
 // обновление аватара
 const editAvatar = (req, res, next) => {
+  const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id,
-    { avatar: req.body.avatar },
+    { avatar },
     { new: true, runValidators: true })
     .then((userAvatar) => {
-      res.status(200).send({ userAvatar });
+      res.status(200).send((userAvatar));
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
@@ -104,11 +102,12 @@ const editAvatar = (req, res, next) => {
 
 // обновление данных пользователя
 const updateProfile = (req, res, next) => {
+  const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id,
-    { name: req.body.name, about: req.body.about },
+    { name, about },
     { new: true, runValidators: true })
     .then((user) => {
-      res.status(200).send({ user });
+      res.status(200).send((user));
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {

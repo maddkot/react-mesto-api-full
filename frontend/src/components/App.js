@@ -47,20 +47,21 @@ function App() {
 
   const [showMessage, setShowMessage] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
-  const [userData, setUserData] = React.useState(null);  
+  const [userData, setUserEmail] = React.useState(null);  
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+  const [token, setToken] = React.useState('')
 
-  const history = useHistory();
+  const history = useHistory();  
 
   const handleCheckedToken = () => {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
+      setToken(jwt)
       Auth.checkedToken(jwt)
         .then((res) => {
-          if (res) {
-            console.log(res);
-            setUserData(res.email);
+          if (res) {            
+            setUserEmail(res.email);
             setLoggedIn(true);
             history.push('./')
           }
@@ -81,21 +82,25 @@ function App() {
     }
   }
   
+   React.useEffect(() => {
+    if (loggedIn) {
+      Promise.all([apiData.getUserInfo(token), apiData.getInitialCards(token)])
+      .then(([userData, initialCards]) => {
+        setCurrentUser(userData)
+        setCards(initialCards)
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    }
+    
+  }, [loggedIn, token]); 
+  
    /* https://stackoverflow.com/questions/55840294/how-to-fix-missing-dependency-warning-when-using-useeffect-react-hook */
    React.useEffect(() => {    
     handleCheckedToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps    
-   }, []) 
-  
-   React.useEffect(() => {
-   if (loggedIn) {      
-      apiData.getServerDatas()
-        .then(([initialCards, userData]) => {
-          setCards(initialCards)
-          setCurrentUser(userData)
-          }      
-        )}    
-  }, [loggedIn])
+   }, [])  
 
   function closeAllPopups() {    
     setEditProfile(false);
@@ -126,15 +131,12 @@ function App() {
       document.removeEventListener('click', closeOverlayPopup);
     }
 
-  })
-
-
-     
+  })     
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some(i => i === currentUser._id);
     if (!isLiked) {
-      apiData.setLike(card._id)
+      apiData.setLike(card._id, token)
         .then((newCard) => {
           const newCards = cards.map((c) => c._id === card._id ? newCard : c);
           setCards(newCards);
@@ -143,7 +145,7 @@ function App() {
           console.log(error);
       });
     } else {
-      apiData.deleteLike(card._id)
+      apiData.deleteLike(card._id, token)
         .then((newCard) => {
           const newCards = cards.map((c) => c._id === card._id ? newCard : c);
           setCards(newCards);
@@ -156,7 +158,7 @@ function App() {
 
   
   function handleCardDelete(card) {
-      apiData.deleteCard(card._id)
+      apiData.deleteCard(card._id, token)
         .then(() => {
           const newCards = cards.filter((c) => c._id !== card._id );          
           setCards(newCards);
@@ -167,7 +169,7 @@ function App() {
   }
 
   function handleUpdateUser(items) {
-      apiData.setUserInfo(items)
+      apiData.setUserInfo(items, token)
         .then((res) => {
           setCurrentUser(res)
           closeAllPopups()
@@ -179,7 +181,7 @@ function App() {
     
   
   function handleUpdateAvatar(item) {
-      apiData.changeAvatar(item)
+      apiData.changeAvatar(item, token)
         .then((res) => {
           setCurrentUser(res)
           closeAllPopups()
@@ -190,9 +192,10 @@ function App() {
   }
 
   function handleAddPlaceSubmit(item) {
-      apiData.addNewCard(item)
+      apiData.addNewCard(item, token)
         .then((res) => {
-          setCards([res, ...cards])
+          console.log(res.card);          
+          setCards([res.card, ...cards])          
           closeAllPopups()
         })
         .catch((error) => {
@@ -213,6 +216,9 @@ function App() {
         if (error === 400) {
           console.log('Некорректно заполнено одно из полей');
           setErrorMessage('Некорректно заполнено одно из полей');
+        } else if (error === 409) {
+          console.log('Данный email уже зарегистрирован');
+          setErrorMessage('Данный email уже зарегистрирован');
         }
       })
   }
@@ -226,10 +232,12 @@ function App() {
       } 
     })  
       .then((data) => {        
-        if (data.token) {                             
-          setLoggedIn(true);
+        if (data.token) {
+          setToken(data.token);
+          setUserEmail(email);
+          setLoggedIn(true);          
           history.push('./');
-          setUserData(email);
+          
       }
       })
       .catch((error) => {
@@ -242,10 +250,8 @@ function App() {
           console.log('Пользователь с таким логином и паролем не найден');
           setErrorMessage('Пользователь с таким логином и паролем не найден');
         }
-      })
-    
+      })    
   }
-
    
   function logout() {
     localStorage.removeItem('jwt');
