@@ -1,5 +1,5 @@
 //export const base_url = 'https://auth.nomoreparties.co';
-export const base_url = 'http://localhost:3000';
+export const base_url = 'https://api.mestomaddkot.students.nomoreparties.space';
 
 export const registration = (email, password) =>{
     return fetch(`${base_url}/signup`, {

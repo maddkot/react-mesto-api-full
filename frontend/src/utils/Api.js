@@ -176,5 +176,5 @@
 
 export const apiData = new Api({
     //baseUrl: "https://mesto.nomoreparties.co/v1/cohort-14", 
-    baseUrl:'http://localhost:3000',    
+    baseUrl:'https://api.mestomaddkot.students.nomoreparties.space',    
   });
