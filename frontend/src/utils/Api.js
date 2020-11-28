@@ -67,10 +67,9 @@
         });
     }
 
-
-    //метод отправки лайка карточек
+      //метод отправки лайка карточек
     setLike(id, token) {
-        return fetch(`${this.baseUrl}/cards/likes/${id}`,
+        return fetch(`${this.baseUrl}/cards/${id}/likes`,
             {
                 method: "PUT",
                 headers: {
@@ -89,7 +88,7 @@
 
     //метод удаления лайка карточек
     deleteLike(id, token) {
-        return fetch(`${this.baseUrl}/cards/likes/${id}`,
+        return fetch(`${this.baseUrl}/cards/${id}/likes`,
             {
                 method: "DELETE",
                 headers: {
@@ -175,6 +174,6 @@
 }
 
 export const apiData = new Api({
-    //baseUrl: "https://mesto.nomoreparties.co/v1/cohort-14", 
+    //baseUrl: 'http://localhost:3000', 
     baseUrl:'https://api.mestomaddkot.students.nomoreparties.space',    
   });

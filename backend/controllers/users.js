@@ -16,9 +16,22 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
+const getUserById = (req, res, next) => {
+  User.findById(req.params.userId)
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Пользователь не найден');
+      } return res.status(200).send(user);
+    })
+    .catch((error) => {
+      if (error.kind === 'ObjectId') {
+        throw new ValidationError('Нет корректного id');
+      }
+      next(error);
+    });
+};
 // получение информации об одном юзере
 const getOneUser = (req, res, next) => {
-  // User.findById(req.user._id)
   User.findById(req.user)
     .then((user) => {
       if (!user) {
@@ -36,9 +49,13 @@ const getOneUser = (req, res, next) => {
 
 // создание пользователя
 const createUser = (req, res, next) => {
-  const { email, password } = req.body;
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
   bcrypt.hash(password, 10)
-    .then((hash) => User.create({ email, password: hash }))
+    .then((hash) => User.create({
+      name, about, avatar, email, password: hash,
+    }))
     .then((user) => {
       res.status(200).send({ message: `Пользователь ${user} создан` });
     })
@@ -64,23 +81,6 @@ const login = (req, res, next) => {
     })
     .catch(next);
 };
-
-/* const getProfile = (req, res, next) => {
-  User.findById(req.user._id)
-    .then((user) => res
-      .status(200)
-      .send({
-        _id: user._id,
-        email: user.email,
-        name: user.name,
-        about: user.about,
-        avatar: user.avatar,
-      }))
-    .catch((err) => {
-      throw err;
-    })
-    .catch(next);
-}; */
 
 // обновление аватара
 const editAvatar = (req, res, next) => {
@@ -123,7 +123,7 @@ module.exports = {
   getOneUser,
   createUser,
   login,
-  // getProfile,
   editAvatar,
   updateProfile,
+  getUserById,
 };
