@@ -175,5 +175,5 @@
 
 export const apiData = new Api({
     //baseUrl: 'http://localhost:3000', 
-    baseUrl:'https://api.mestomaddkot.students.nomoreparties.space',    
+    baseUrl:'https://api.mesto-maddkot.students.nomoreparties.space',    
   });
